@@ -1,0 +1,487 @@
+---
+title: "R Markdown for reproducible workflows"
+subtitle: "**ecomeetings BC3**"
+author: Rodrigo R. Granjel^[Basque Center for Climate Change (BC3); rodrigo.granjel@bc3research.org] and Francisco San Miguel, Oti^[Basque Center for Climate Change (BC3); francisco.sanmiguel@bc3research.org]
+date: "March 7th, 2024"
+output:
+  bookdown::html_document2:
+    toc: true
+    toc_float: false
+    theme: paper
+    highlights: pygments
+    number_sections: true
+    df_print: paged
+csl: settings/ecology-letters.csl
+bibliography: settings/references.bib
+link-citations: yes
+---
+
+<!-- Global chunk options -->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE)
+```
+
+<!-- HTML settings: text size and more -->
+
+```{=html}
+<style type="text/css">
+body, td {font-size: 16px}
+code.r {font-size: 16px}
+pre {font-size: 16px}
+body {text-align: left}
+h1 {font-size: 28px}
+h2 {font-size: 24px}
+h3 {font-size: 20px}
+h3 {font-size: 20px}
+img {display: block; margin: 0 auto;}
+</style>
+```
+<!-- Copy to clipboard button -->
+
+```{r xaringanExtra-clipboard, echo=FALSE, include=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+  ), rmarkdown::html_dependency_font_awesome()
+)
+```
+
+------------------------------------------------------------------------
+
+# What is R Markdown?
+
+R Markdown is a powerful tool that allows you to create dynamic documents that **integrate code, text, and visualizations**. R Markdown documents can be easily converted to various output formats (HTML, PDF, and more), which makes it versatile and practical. How does it work? You write text in Markdown, a simple markup language with an easy learning curve, and intertwine it with pieces of code whenever you feel like it, creating a unique workflow with lots of possibilities, from internal reports for your team to whole ready-to-publish documents that are **fully reproducible**.
+
+------------------------------------------------------------------------
+
+<center>
+
+![A very common situation.](media/phd_comics_repro.png)
+
+</center>
+
+------------------------------------------------------------------------
+
+In essence, R Markdown works as described in Figure \@ref(fig:rmd-flow). You write code and markdown text and create a `.rmd` document. When you are ready to generate the output, clicking on the **Knit** button (or using `Shift` + `Ctrl` + `K` on Windows, `Command` + `Option` + `I` on macOS) triggers a chain reaction that starts with the package **knitr** [@xie2023knit] (included in the **rmarkdown** package) converting the `.rmd` document into a pure markdown one or `.md`. Then **pandoc**, a free software document converter, is able to process the plain `.md` file and create your desired output whether it is a HTML, PDF, or Word document. However, these are not the only three possible outputs; with the help of other packages we can create multiple types of documents from presentations to websites.
+
+```{r rmd-flow, fig.cap = "R Markdown flow, from the `.rmd` file to the final output.", out.width=750, fig.align="center", echo=FALSE}
+knitr::include_graphics("media/rmarkdownflow.png")
+```
+
+> At the end of this introduction to R Markdown we will have a look to several examples of the multiple outputs that we can generate with it. But, for now, let's learn how to use it!
+
+------------------------------------------------------------------------
+
+# How do I use it? {#usage}
+
+In this section we will have a look at the practical information needed to leave this room knowing how to create and use your first R Markdown (`.rmd`) document.
+
+------------------------------------------------------------------------
+
+## My first `.rmd` document {#first-md}
+
+Needless to say, the first step is to install R [@rcoreteam2023]---you can find the newest update available [here](https://www.r-project.org/). It is also recommended but not strictly necessary to use the RStudio IDE, which you can download and install from [here](https://www.rstudio.com/).
+
+Next step is to install and load the package **rmarkdown** [@allaire2023]:
+
+```{r install_rmarkdown, eval=FALSE}
+install.packages("rmarkdown") # install the package
+library(rmarkdown) # load the package
+```
+
+Now, for HTML output no extra action is needed, but if you need to create PDF you need to install LaTeX. You can do this using the package **tinytex** [@xie2023tiny]:
+
+```{r install_latex, eval=FALSE}
+tinytex::install_tinytex()
+```
+
+After this, you can go to **RStudio \> File \> New File \> R Markdown**, then choose the title for your document and output format between HTML (default), PDF and Word. All these specifications can be edited later.
+
+------------------------------------------------------------------------
+
+## `.rmd` file structure {#file-str}
+
+### YAML {#yaml}
+
+[YAML](http://www.yaml.org/), that means *YAML Ain't Markup Language*, is a human-readable serialization language that we can use at the beggining of an R Markdown document to specify the metadata and settings. It is automatically created when opening a new `.rmd` document from RStudio, but it can be manually created by indicating three dashes before and after like this:
+
+`---`
+
+YAML specifications
+
+`---`
+
+Here's the YAML used to create this document:
+
+```         
+---
+title: "R Markdown for reproducible workflows"
+subtitle: "**ecomeetings BC3**"
+author: Rodrigo R. Granjel^[Basque Center for Climate Change (BC3); rodrigo.granjel@bc3research.org] and Francisco San Miguel, Oti^[Basque Center for Climate Change (BC3); francisco.sanmiguel@bc3research.org]
+date: "March 7th, 2024"
+output:
+  html_document:
+    toc: false
+    toc_float: false
+    theme: paper
+    highlights: pygments
+    number_sections: true
+    df_print: paged
+csl: settings/ecology-letters.csl
+bibliography: references.bib
+link-citations: yes
+---
+```
+
+Notice that we have metadata such as author, title, or date, but also configuration options such as output format or reference styling. A full guide to the YAML parameters and configuration options is accessible [here](https://cran.r-project.org/web/packages/ymlthis/vignettes/yaml-fieldguide.html).
+
+### Formatted text {#text}
+
+Very simple: this is simply just plain markdown text. We will learn how to use the basic formatting options in a minute.
+
+### Code {#code}
+
+#### Code chunks
+
+It's like having mini (or not-so-mini) R scripts embedded in your text document, wherever you want to place them, but they're now called chunks. They work independently but unidirectionally, meaning that a chunk can only use code outputs and refer to code chunks placed and ran before itself and not after. But, **how do I create one of these chunks?** To automatically create an R chunk, you can use the hotkey `Alt` + `Ctrl` + `I` on Windows or `Command` + `Option` + `I` on macOS. Else, you can manually create a chunk by enclosing your code in between two sets of three backticks: ```` ```{r} chunk ``` ````. Importantly, after the first three backticks you need to specify in brackets what language you want to use to run the code in the chunk; for R, the default option, it is `{r}`. This means that you can also add other programming languages to your workflow. A list of languages available can be found [here](https://rmarkdown.rstudio.com/lesson-5.html).
+
+It is also a good practice to **name your chunk with a short label**. To do this, you simply add the label next to the language determiner, such as this: `{r label}`. For example, if I'm using a chunk that runs the main simulation of my workflow, I can call it `{r simulation}`, or if I'm producing a figure such as a heat map, I can name the chunk `{r heatmap_fig}`. Very important: you cannot have repeated labels or the document won't render!
+
+Moreover, using a comma after the label allows you to access the **configuration options for your chunk**. For example, `{r label, echo=FALSE}` creates a chunk that hides the code but shows the results in a final output. This is great if you're writing a paper, for example, and you want to place a figure in a particular spot of your document but not show the code behind it. Another examples are `include`, that determines whether both code and results show; `message`, for showing messages or not, as well as `warning`; or `eval`, to run or not the chunk but still show it. There are many other configuration options available and you can combine them as you desire. All options are described [here](https://yihui.org/knitr/options/).
+
+If you don't want to have to modify the chunk options every time you create a chunk, you can use a chunk at the beggining of your `.rmd` document to set the default options for all subsequent chunks, like this:
+
+```{r options, eval=FALSE}
+knitr::opts_chunk$set(echo=TRUE)
+```
+
+The wonderful thing about this is that you can always set specific instructions for a particular chunk and these will override the default options.
+
+#### Inline code
+
+This is my favorite thing of R Markdown (Rodrigo speaking). You can **embed R code in between words** to automatically generate the result of that line. Imagine you have the following sentence: "The value of the variable is 0.55, which is greater than 0.5." However, you have to rerun your analyses with an additional set of data and now, the value of the variable has changed to 0.41 and no longer is greater than 0.5. You would have to rewrite the whole sentence---no big deal. But what if another collaborator in this global project sends you more data? Do you do it all again, and again, and again? R Markdown is here to lend you a hand.
+
+```{r inline_code, echo=TRUE}
+# define the threshold
+threshold <- 0.5
+
+# select a random number for x (our variable)
+x <- round(runif(1, 0, 1), 2)
+```
+
+The piece of code above defines a threshold (0.5 to follow the example) and then a random number between 0 and 1 that is assigned to `x` simulating a collaborator sending you new data and changing your results. Instead of panicking, we can automate the previous sentence like this:
+
+```{r, eval=FALSE}
+The value of the variable is `r x`, which is `r if (x > threshold){paste("greater than")}else{if(x < threshold){paste("smaller than")}else{paste("equal to")}}` `r threshold`.
+```
+
+And it will automatically generate this sentence:
+
+The value of the variable is `r x`, which is `r if (x > threshold){paste("greater than")}else{if(x < threshold){paste("smaller than")}else{paste("equal to")}}` `r threshold`.
+
+Basically, to add inline code you can use the backtick followed by the letter r, the code and a final backtick---as in the previous example.
+
+------------------------------------------------------------------------
+
+## Syntax {#syntax}
+
+To nobody's surprise, R Markdown uses the [Markdown](https://en.wikipedia.org/wiki/Markdown) syntax. We will have a look at the basic commands (and some more advanced) commands that will allow us to create any document we desire.
+
+### Headers and lists
+
+#### Line breaks and horizontal lines
+
+For line breaks (change of paragraph):
+
+-   two spaces at the end of the line
+-   an html break: `<br>`
+-   leaving a blank line
+-   LaTex commands if you're rendering a PDF
+
+To include a horizontal line, you can use:
+
+-   Three dashes on an otherwise blank line: `---`
+-   Three asterisks on an otherwise blank line: `***`
+
+> If you use three dashes in between words it creates a long dash---just like that one.
+
+#### Headers
+
+Unlike in R code, where it begins a commentary, the pound sign followed by a space and text (`# Text`) defines a header:
+
+-   `# Header 1`
+-   `## Header 2`
+-   `### Header 3`
+-   `#### Header 4`
+-   `##### Header 5`
+
+Interesting enough, these headers are not numbered by default, but you can add the command `number_sections: true` within the YAML to automatically number them, like this:
+
+```         
+---
+output:
+  html_document:
+    number_sections: true
+---
+```
+
+> **Tip:** do not skip a level when assigning numbered headers (e.g., by starting with `## Introduction` instead of `# Introduction`), or else you'd get `0.1 Introduction` instead of `1 Introduction`.
+
+#### Lists: bullets and numbers
+
+For **unordered** lists, you can use `*`, `-` or `+`:
+
+```         
+* First element  
+- Second element
++ Third element
+```
+
+Generates the following list:
+
+-   First element
+-   Second element
+-   Third element
+
+> Note that there must be a white line in between the list and the preceding text.
+
+And then, for adding sublevels we simply indent the elements of the list:
+
+```         
+- First element
+  - Indented element
+- Second element
+- Third element
+  - Sub-level one
+    - Sub-level two
+```
+
+Makes:
+
+-   First element
+    -   Indented element
+-   Second element
+-   Third element
+    -   Sub-level one
+        -   Sub-level two
+
+And then, we can create **numbered lists** indicating numbers instead of bullets:
+
+```         
+1. First element
+7. Second element
+3. Third element
+```
+
+Makes:
+
+1.  First element
+2.  Second element
+3.  Third element
+
+> Notice that Markdown will automatically number the list in a consecutive manner, independently of the numbers you've used to create the list.
+
+### Images, tables, hyperlinks
+
+#### Add images
+
+The most simple way to insert an image is through the following command: `![Image caption](path-to-image)`. For example, let's add an image named `phd_comics_data.png` that's contained in a folder named `media` within the main directory of the R Markdown file: `![Phil---osophical problem.](media/phd_comics_data.png)`.
+
+------------------------------------------------------------------------
+
+<center>
+
+![Phil---osophical problem.](media/phd_comics_data.png)
+
+</center>
+
+------------------------------------------------------------------------
+
+Additionally, you can resize the figure by adding `{width=X% height=Y%}` after the parenthesis containing the path to the image, such as this: `![Phil---osophical problem.](media/phd_comics_data.png){width=50% height=50%}`
+
+> **Pro tip:** you may notice that adding the image this way does not automatically number it (for example, as "Figure 1. Caption."). You can achieve this using the **bookdown** package @xie2023book. For this, you need to substitute the output format in the YAML: `bookdown::html_document2` instead of `html_document`. Now, you can load your image within a chunk of R using the function `knitr::include_graphics(path-to-image)`. You can now specify the caption in the chunk options with `fig.cap="caption"` and the caption number will be automatically generated alongside it. This also applies to figures generated using R code! For more (and better) information on how to do this, click [here](https://bookdown.org/yihui/rmarkdown-cookbook/figure-number.html).
+
+Example of a numbered plot generated with R:
+
+```` md
+```{r cars, fig.cap = "An amazing plot."}`r ''`
+plot(mpg ~ hp, mtcars)
+```
+````
+
+<center>
+
+```{r cars, fig.cap = "An amazing plot.", echo=FALSE}
+plot(mpg ~ hp, mtcars)
+```
+
+</center>
+
+------------------------------------------------------------------------
+
+#### Add tables
+
+The most simple table in R Markdown has the following syntax:
+
+```         
+Column Header | Column Header
+---           | ---              
+Cell 1        |  Cell 2       
+Cell 3        |  Cell 4    
+```
+
+Which produces:
+
+| Column Header | Column Header |
+|---------------|---------------|
+| Cell 1        | Cell 2        |
+| Cell 3        | Cell 4        |
+
+Pretty neat. Besides, you can make it reproducible using inline code:
+
+```{r table_manual_variables, echo=FALSE}
+x <- round(runif(1, 0, 1), 2)
+w <- round(runif(1, 0, 1), 2)
+y <- round(runif(1, 0, 1), 2)
+z <- round(runif(1, 0, 1), 2)
+```
+
+```{r table_manual, eval=FALSE}
+Control | Treatment
+---     | ---              
+`r x`   |  `r w`       
+`r y`   |  `r z`  
+```
+
+| Control | Treatment |
+|---------|-----------|
+| `r x`   | `r w`     |
+| `r y`   | `r z`     |
+
+But this type of table might not be useful for showing results of a model or even a data set. Besides, you may have noticed that it does not show a caption and it cannot be referenced to. For better, proper tables we can use the function `knitr::kable()` and, even better, using `kbl()` with the **kableExtra** package [@zhu2021] more customization and functionality options. Check [this link](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html) for a wonderful explanation on **kableExtra**.
+
+Example of a table with numbered caption generated with `kbl()`:
+
+```` md
+```{r "kable"}`r ''`
+knitr::kable(
+  head(mtcars[, 1:6], 10), booktabs = TRUE,
+  caption = "An amazing table."
+)
+```
+````
+
+<center>
+
+```{r "kable", echo=FALSE, warning=FALSE, message=FALSE}
+knitr::kable(
+  head(mtcars[, 1:6], 10), booktabs = TRUE,
+  caption = "An amazing table."
+)
+```
+
+</center>
+
+------------------------------------------------------------------------
+
+#### Hyperlinks
+
+If you want to add a hyperlink to a word or piece of text, you need to use the following command: `[text](link)`. Easy. Here's an example:
+
+`[This is the text that will contain the link.](https://shorturl.at/qxyL6)`
+
+Produces:
+
+[This is the text that will contain the link.](https://shorturl.at/qxyL6)
+
+### Emphasis, formulas and footnotes
+
+#### Emphasis
+
+One for italics:
+
+-   `*italics*` gives *italics*
+-   `_italics_` gives *italics*
+
+Two for bold:
+
+-   `**bold**` gives **bold**
+-   `__bold__` gives **bold**
+
+And use three to combine them:
+
+-   `***bold italic***` gives ***bold italic***
+-   `___bold italic___` gives ***bold italic***
+
+#### Blockquotes
+
+Using:
+
+`> *"Perhaps it’s impossible to wear an identity without becoming what you pretend to be."*--- Valentine Wiggin, 1985`
+
+Gives:
+
+> *"Perhaps it's impossible to wear an identity without becoming what you pretend to be."* --- Valentine Wiggin, 1985
+
+#### Equations
+
+You can add equations using LaTeX. You can add them both inline: for example, the syntax `$y = x + 1$` produces $y = x + 1$ within the same line, but not referenced; or you can use the following syntax to create a referenced equation:
+
+```         
+\begin{equation}
+\bar{X} = \frac{\sum_{i=1}^n X_i}{n} (\#eq:mean)
+\end{equation}
+```
+
+```{=tex}
+\begin{equation}
+\bar{X} = \frac{\sum_{i=1}^n X_i}{n} (\#eq:mean)
+\end{equation}
+```
+#### Footnotes
+
+This is also simple: use `^[footnote]` to add a footnote, like this: `^[This is the footnote we were talking about!]`, which generates this[^1] (click on the superscript number go to the footnote at the very end of the document.) Note that Oti and I have also included our affiliation and email addresses as a footnote linked to our names at the very beggining of the document.
+
+[^1]: This is the footnote we were talking about!
+
+### Cross-referencing
+
+You can reference sections and code chunks within your same document. To do this, we need to create a label first. To set the label for the sections, you need to use `{#label}` next to the header of the section, like this: `# Header {#label}`. We explained how to label code chunks in Section \@ref(code). As an example: `Section \@ref(usage)` references Section \@ref(usage) because that section was labeled this way: `# How do I use it? {#usage}`.
+
+If you use the output `bookdown::html_document2`, you can cross-reference figures, tables and equations within the same document. For figures, for example, you need to write `\ref@(fig:label-of-the-chunk-generating-the-figure)`. If we want to reference one of our figures, such as our amazing plot, you would do it like this: "Our amazing plot is in Figure `\@ref(fig:cars)`" produces "Our amazing plot is in Figure \@ref(fig:cars)."
+
+You can find more information [here](https://bookdown.org/yihui/rmarkdown-cookbook/cross-ref.html).
+
+### Citations and bibliography
+
+-   Visit the following link: <https://rstudio.github.io/visual-markdown-editing/citations.html>
+-   We also recommend checking [this one](https://ucsbcarpentry.github.io/R-markdown/06-citations-bib/index.html).
+
+------------------------------------------------------------------------
+
+# Examples
+
+Examples of documents that can be generated with R Markdown:
+
+-   HTML report
+-   PDF article
+-   Word document
+-   Presentations in [different formats](https://rmarkdown.rstudio.com/lesson-11.html).
+-   Books: **bookdown** [@xie2023book]
+    -   More information [here.](https://bookdown.org/)
+-   Websites: **blogdown** [@xie2024]
+    -   More information [here.](https://bookdown.org/yihui/blogdown/)
+-   Interactive documents: **shiny** [@chang2023]
+    -   More information [here.](https://shiny.posit.co/)
+-   Dashboards: **flexdashboard** [@aden-buie2023]
+    -   More information [here.](https://pkgs.rstudio.com/flexdashboard/)
+
+[This is a good place to look for examples.](https://rmarkdown.rstudio.com/gallery.html)
+
+------------------------------------------------------------------------
+
+# Referencias {#refs .unnumbered}
+
+<!--References go here.-->
