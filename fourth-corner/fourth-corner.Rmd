@@ -47,7 +47,7 @@ htmltools::tagList(
 ```
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = FALSE)
 ```
 
 <!--End setup-->
@@ -58,7 +58,19 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 ------------------------------------------------------------------------
 
-## Cuarta esquina o *fourth-corner*
+
+## Modelos de distribución de especies
+
+El modelado de distribución de especies es una herramienta clave en ecología y biogeografía que permite predecir y entender cómo y por qué ciertas especies se distribuyen en un hábitat o espacio geográfico determinado. Tradicionalmente, utiliza datos demográficos de las especies (bien presencia/ausencia, bien abundancia) junto con variables ambientales para construir modelos que simulan su distribución en diferentes escenarios. Estos modelos son fundamentales para la conservación de la biodiversidad, el manejo de ecosistemas, la restauración de hábitats y el estudio de los impactos del cambio climático sobre las especies. Además, proporcionan información crucial para la toma de decisiones en, por ejemplo, la planificación ambiental y el diseño de áreas protegidas.
+
+<center>
+
+![Esquema tomado de [Wikipedia](https://en.wikipedia.org/wiki/Species_distribution_modelling), creado por el usuario Ranvald.](predicting-habitats.png){width=700}
+
+</center>
+
+
+## Rasgos funcionales: cuarta esquina o *fourth-corner*
 
 El problema de la cuarta esquina (*fourth-corner*) trata de relacionar los rasgos de los organismos con el entorno en el que estos se encuentran. Es una aproximación más holística al modelado de distribución de especies, que clásicamente se realiza teniendo en cuenta la relación directa de las especies con el ambiente. ¿Por qué recibe el nombre de la **cuarta esquina**? Se debe a que involucra tres matrices para calcular una cuarta, como vemos en el siguiente esquema:
 
@@ -445,7 +457,7 @@ head(Q)
 
 ------------------------------------------------------------------------
 
-En la tabla siguiente se muestra la descripción de los rasgos funcionales de los organismos. A tener en cuenta: los valores de los rasgos se corresponden con los valores mostrados como columnas. Esto quiere decir que, por ejemplo, si la variable 1 (`var1`) tiene un valor de 1.33, ese organismo puede alcanzar un tamaño máximo de entre 0.25cm y 5cm, pero es más probable que su tamaño sea de 0.25cm o menor (porque 1.33 está más cerca de 1 que de 2).
+En la tabla siguiente se muestra la descripción de los rasgos funcionales de los organismos. A tener en cuenta: los valores de los rasgos se corresponden con los valores mostrados como columnas. Esto quiere decir que, por ejemplo, si la variable 1 (`var1`) tiene un valor de 1.33, ese organismo puede alcanzar un tamaño máximo de entre 0.25cm y 5cm, pero es más probable que su tamaño sea de 0.25cm o menor (porque 1.33 está más cerca de 1 que de 2). A esto se le llama [*fuzzy-coding*](https://arctictraits.univie.ac.at/traitspublic_fuzzyCoding.php) los datos de rasgos funcionales.
 
 ```{r table_traits, echo=FALSE}
 traits <- list(
