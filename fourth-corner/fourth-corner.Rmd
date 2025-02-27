@@ -72,7 +72,7 @@ El modelado de distribución de especies es una herramienta clave en ecología y
 
 ## Rasgos funcionales: cuarta esquina o *fourth-corner*
 
-El problema de la cuarta esquina (*fourth-corner*) trata de relacionar los rasgos de los organismos con el entorno en el que estos se encuentran. Es una aproximación más holística al modelado de distribución de especies, que clásicamente se realiza teniendo en cuenta la relación directa de las especies con el ambiente. ¿Por qué recibe el nombre de la **cuarta esquina**? Se debe a que involucra tres matrices para calcular una cuarta, como vemos en el siguiente esquema:
+El problema de la cuarta esquina (*fourth-corner*) trata de relacionar los rasgos de los organismos con el entorno en el que estos se encuentran. Es una aproximación más holística al modelado de distribución de especies que nos permite responder a preguntas ecológicas diferentes. ¿Por qué recibe el nombre de la **cuarta esquina**? Se debe a que involucra tres matrices para calcular una cuarta, como vemos en el siguiente esquema:
 
 ------------------------------------------------------------------------
 
