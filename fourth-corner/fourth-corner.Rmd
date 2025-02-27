@@ -11,7 +11,7 @@ output:
       df_print: paged
 bibliography: references.bib
 csl: ecology-letters.csl
-link-citations: yes
+link-citations: true
 ---
 
 <!--Begin setup-->
