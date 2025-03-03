@@ -13,9 +13,7 @@ format:
 This is a slide.
 
 ::: {.notes}
-```{r}
-lorem::ipsum(paragraphs = 2, sentences = 5)
-```
+These are my notes.
 :::
 
 ## Some plot
@@ -25,13 +23,6 @@ This is a plot.
 ```{r}
 plot(1:10, 1:10)
 ```
-
-## How the fuck am I going to do this?
-
-I have no clue.
-
-
-
 
 
 
