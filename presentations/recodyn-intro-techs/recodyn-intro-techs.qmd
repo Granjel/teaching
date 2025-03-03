@@ -1,16 +1,21 @@
 ---
-title: "Recovery dynamics and species coexistence"
+title: "From hero to zero"
 author: Rodrigo R. Granjel
 format:
   revealjs:
-    theme: dark
+    theme: bc3-theme.scss
     incremental: false
     logo: images/bc3-dark-logo.png
+    slide-level: 2
 ---
 
-## Slide 1
+# About me
 
-This is a slide.
+*Who ~~the hell~~ am I?*
+
+## Species coexistence
+
+Blabla
 
 ::: {.notes}
 These are my notes.
@@ -21,9 +26,9 @@ These are my notes.
 This is a plot.
 
 ```{r}
+#| echo: true
 plot(1:10, 1:10)
 ```
-
 
 
 
