@@ -52,7 +52,7 @@ These are my notes.
 
 ## Career
 
-Include a conceptual map or some sort of scheme
+![](career-graph.png)
 
 ::: {.notes}
 These are my notes.
