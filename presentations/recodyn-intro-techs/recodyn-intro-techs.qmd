@@ -1,6 +1,9 @@
 ---
-title: "From hero to zero"
+title: "`Theory < data` for community ecology"
+subtitle: 🌱
+date: 2025-03-05
 author: Rodrigo R. Granjel
+institute: Basque Centre for Climate Change (BC3)
 format:
   revealjs:
     theme: bc3-theme.scss
@@ -9,26 +12,147 @@ format:
     slide-level: 2
 ---
 
-# About me
-
-*Who ~~the hell~~ am I?*
-
-## Species coexistence
-
-Blabla
+# Who am <span style="color:#4EBF7B">I</span>?
 
 ::: {.notes}
 These are my notes.
 :::
 
-## Some plot
+## Life (1/2)
 
-This is a plot.
+- born and raised in <span style="color:#4EBF7B">Vigo, Galicia</span>
 
-```{r}
-#| echo: true
-plot(1:10, 1:10)
-```
+- used to hide roly polies in pockets to take them home from kindergarten
+
+- started hiding them in socks after teacher found out
+
+- not super interested in the natural world growing up
+
+- parents wanted me to be a medical doctor because of Franco^[I love my family, don't let my words fool you---they just wanted their son to be *somebody*]
+
+- repeated last year of high-school, didn't like it
+
+::: {.notes}
+These are my notes.
+:::
+
+## Life (2/2)
+
+- invoked the spirits of the roly polies and went to uni to become a <span style="color:#4EBF7B">biologist</span>
+
+- adopted Meiga^[Who is a 🐈, not a roly poly]
+
+- went on and became a real doctor
+
+- met this woman who had a tank of pet roly polies, kidnapped her & married her
+
+::: {.notes}
+These are my notes.
+:::
+
+## Career
+
+Include a conceptual map or some sort of scheme
+
+::: {.notes}
+These are my notes.
+:::
+
+# What am I doing here?
+An overview of my <span style="color:#4EBF7B">science</span>
+
+::: {.notes}
+These are my notes.
+:::
+
+## How is biodiversity maintained?
+...
+
+## Coexistence theory
+...
+
+::: {.notes}
+These are my notes.
+:::
+
+## 
+
+::: {.notes}
+These are my notes.
+:::
+
+# How can I be *useful* for <span style="color:#4EBF7B">you</span>?
+(Thought for the new techs, but applies to all)
+
+::: {.notes}
+These are my notes.
+:::
+
+## Come to me if you want (1/2)
+
+- **to learn (or improve your) <span style="color:#4EBF7B">R skills</span>**
+  - can help you better than chatGPT^[But worse than Mark]
+
+- **an <span style="color:#4EBF7B">opinion</span> on dataviz (or anything else)**
+  - can't see red on black very well, so please, don't highlight text in <span style="color:red">red</span>^[<span style="color:red">This background is not black so I'm ok-ish</span>] 🙏
+
+- **to discuss an <span style="color:#4EBF7B">idea</span> you've had, ecologically relevant or not**
+  - love talking science
+
+- **to write a piece for [*The Conversation*](https://theconversation.com/es)**
+  - would be happy to help shape the focus and co-author it with you
+
+::: {.notes}
+These are my notes.
+:::
+
+## Come to me if you want (2/2)
+
+- **some <span style="color:#4EBF7B">mentoring</span> about how to navigate the academic system**
+  - have experience in multiple situations so I *might* be helpful
+
+- **to speak in Spanish, <span style="color:#4EBF7B">Galician</span>, or Portuguese**
+  - for other languages beyond English, I'll delegate to my teammates
+
+- **to play <span style="color:#4EBF7B">pádel</span>**
+  - a bunch of people from BC3 go ~once a week
+
+- **a favour or just a <span style="color:#4EBF7B">chat</span>**
+  - this job is very demanding of our time and energy so let's prevent burnout
+
+::: {.notes}
+These are my notes.
+:::
+
+# Thank you 😸
+
+- BlueSky: [@granjel.bsky.social](https://bsky.app/profile/granjel.bsky.social) 🦋
+
+- Phone number: +34 667 04 86 44 📱
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
