@@ -68,20 +68,37 @@ These are my notes.
 ## How is biodiversity maintained?
 ...
 
+::: aside
+Papers
+:::
+
+::: {.notes}
+These are my notes.
+:::
+
 ## Coexistence theory
 ...
 
+::: aside
+Papers
+:::
+
 ::: {.notes}
 These are my notes.
 :::
 
-## 
+## Whatever else
+...
+
+::: aside
+Papers
+:::
 
 ::: {.notes}
 These are my notes.
 :::
 
-# How can I be *useful* for <span style="color:#4EBF7B">you</span>?
+# How can I be *useful* to <span style="color:#4EBF7B">you</span>?
 (Thought for the new techs, but applies to all)
 
 ::: {.notes}
@@ -129,31 +146,3 @@ These are my notes.
 - BlueSky: [@granjel.bsky.social](https://bsky.app/profile/granjel.bsky.social) 🦋
 
 - Phone number: +34 667 04 86 44 📱
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
