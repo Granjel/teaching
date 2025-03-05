@@ -30,7 +30,7 @@ These are my notes.
 
 - parents wanted me to be a medical doctor because of Franco^[I love my family, don't let my words fool you---they just wanted their son to be *somebody*]
 
-- repeated last year of high-school, didn't like it
+- failed 8/9 last year of high school, had to retake it
 
 ::: {.notes}
 These are my notes.
@@ -66,33 +66,104 @@ These are my notes.
 :::
 
 ## How is biodiversity maintained?
-...
 
-::: aside
-Papers
+## How is biodiversity maintained?
+
+:::{.incremental}
+
+Imagine we have two species, 🌼 & 🪻:
+
+a) If the <span style="color:#4EBF7B">niches</span> of 🌼 & 🪻 are totally different, they mind their own business ☮️
+
+b) If their niches completely overlap, there's drama; <span style="color:#4EBF7B">competitive exclusion</span>^a^: the most competitive (🌼 = 🏅) outcompetes the least competitive (🪻 = 💀)
+
 :::
 
 ::: {.notes}
 These are my notes.
 :::
 
-## Coexistence theory
-...
+## How is biodiversity maintained?
 
-::: aside
-Papers
+Imagine we have two species, 🌼 & 🪻:
+
+a) If the <span style="color:#4EBF7B">niches</span> of 🌼 & 🪻 are totally different, they mind their own business ☮️
+
+b) If their niches completely overlap, there's drama; <span style="color:#4EBF7B">competitive exclusion</span>^a^: the most competitive (🌼 = 🏅) outcompetes the least competitive (🪻 = 💀)
+
+c) Anything in between: <span style="color:#4EBF7B">modern coexistence theory</span>^b,c^
+
+![](images/letten-coex.png){fig-align="center"}
+
+::: {.notes}
+These are my notes.
+:::
+
+## Pairwise understanding of biodiversity maintenance (examples)
+
+:::{.incremental}
+
+- climate <span style="color:#4EBF7B">variability</span> has a stabilising effect in the community^d^, but climatic <span style="color:#4EBF7B">extremes</span> lead to lower probability of coexistence^e^
+
+- the inferior competitor arriving first can generate <span style="color:#4EBF7B">close-to-neutrality</span> situations (low niche and fitness differences)^f^
+
+- correlations between <span style="color:#4EBF7B">functional traits</span> and fitness differences are clear but not so much with niche differences^g^
+
+- <span style="color:#4EBF7B">phylogeny</span> does not predict coexistence mechanisms, against expectations^h,i^
+
+- etc.
+
 :::
 
 ::: {.notes}
 These are my notes.
 :::
 
-## Whatever else
-...
+## Multispecies coexistence: <span style="color:#4EBF7B">structural stability</span>^j^
 
-::: aside
-Papers
+![](images/str-coex.png){fig-align="center"}
+
+::: {.notes}
+These are my notes.
 :::
+
+## Multispecies coexistence: <span style="color:#4EBF7B">structural stability</span> (**my work**^k^)
+
+- Nitrogen enrichment & pathogen suppression:
+
+![](images/granjel-new-phytol.png){fig-align="center"}
+
+- Multitrophic interactions in a plant-grasshopper interaction network (*under review*)
+
+- Land use intensity (*submitted*)
+
+::: {.notes}
+These are my notes.
+:::
+
+## Multispecies coexistence: <span style="color:#4EBF7B">assembly graphs</span>^m^
+
+![](images/assembly-song.png){fig-align="center"}
+
+::: {.notes}
+These are my notes.
+:::
+
+## <span style="color:#4EBF7B">RECODYN</span> (Q: 1/n)
+
+How does climate change affect the coexistence mechanisms of recovering communities?
+
+![](images/granjel-boxplots.jpg){fig-align="center"}
+
+::: {.notes}
+These are my notes.
+:::
+
+## <span style="color:#4EBF7B">RECODYN</span> (Q: 2/n)
+
+What are the recovery pathways of ecological communities under climate change?
+
+![](images/godoy-assembly.jpg){fig-align="center"}
 
 ::: {.notes}
 These are my notes.
@@ -146,3 +217,43 @@ These are my notes.
 - BlueSky: [@granjel.bsky.social](https://bsky.app/profile/granjel.bsky.social) 🦋
 
 - Phone number: +34 667 04 86 44 📱
+
+## References cited
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+^a^[Gause, 1934](https://web.archive.org/web/20161128142418/http://www.ggause.com/Contgau.htm)
+
+^b^[Chesson, 2000](https://www.annualreviews.org/content/journals/10.1146/annurev.ecolsys.31.1.343)
+
+^c^[Letten et al., 2016](https://esajournals.onlinelibrary.wiley.com/doi/abs/10.1002/ecm.1242)
+
+^d^[Adler et al., 2006](https://www.pnas.org/doi/10.1073/pnas.0600599103)
+
+^e^[Matías et al., 2018](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2745.12962)
+
+^f^[Fragata et al., 2022](https://onlinelibrary.wiley.com/doi/abs/10.1111/ele.14021)
+
+^g^[Kraft et al., 2015](https://www.pnas.org/doi/10.1073/pnas.1413650112)
+
+:::
+
+::: {.column width="50%"}
+
+^h^[Narwani et al., 2013](https://onlinelibrary.wiley.com/doi/abs/10.1111/ele.12182)
+
+^i^[Godoy et al., 2014](https://onlinelibrary.wiley.com/doi/abs/10.1111/ele.12289)
+
+^j^[Saavedra et al., 2017](https://esajournals.onlinelibrary.wiley.com/doi/10.1002/ecm.1263)
+
+^k^[Granjel et al., 2023](https://nph.onlinelibrary.wiley.com/doi/full/10.1111/nph.18689)
+
+^m^[Song, 2024](https://ecoevorxiv.org/repository/view/7488/)
+
+^n^[Godoy et al., 2024](https://esajournals.onlinelibrary.wiley.com/doi/10.1002/ecm.1633)
+
+:::
+
+::::
