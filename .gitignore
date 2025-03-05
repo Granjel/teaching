@@ -47,3 +47,6 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+# files created by rmd rendering
+fourth-corner/fourth-corner_files/

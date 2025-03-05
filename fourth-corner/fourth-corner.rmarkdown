@@ -2,8 +2,8 @@
 title: "Aproximación al problema del *fourth-corner*"
 author:
   - name: Rodrigo R. Granjel
-    affiliation: Basque Centre for Climate Change (BC3)
-    email: rodrigo.granjel@bc3research.org
+  - affiliation: Basque Center for Climate Change (BC3)
+  - email: rodrigo.granjel@bc3research.org
 output:
     html_document:
       toc: false
@@ -11,7 +11,7 @@ output:
       theme: paper
       highlight: pygments
       df_print: paged
-lang: es-ES
+lang: ES-es
 bibliography: references.bib
 csl: ecology-letters.csl
 link-citations: true
@@ -45,8 +45,6 @@ htmltools::tagList(
   xaringanExtra::use_clipboard(
     button_text = "<i class=\"fa fa-clipboard\"></i>",
     success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
-  ),
-  rmarkdown::html_dependency_font_awesome()
   ),
   rmarkdown::html_dependency_font_awesome()
 )
@@ -889,3 +887,4 @@ ggarrange(plotlist = plot_list, ncol = 2, nrow = 3, common.legend = FALSE)
 # Referencias
 
 <!--References go here.-->
+
