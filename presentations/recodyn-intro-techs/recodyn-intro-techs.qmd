@@ -18,7 +18,7 @@ format:
 These are my notes.
 :::
 
-## Life (1/2)
+<!-- ## Life (1/2)
 
 - born and raised in <span style="color:#4EBF7B">Vigo, Galicia</span>
 
@@ -48,7 +48,7 @@ These are my notes.
 
 ::: {.notes}
 These are my notes.
-:::
+::: -->
 
 ## Career
 
