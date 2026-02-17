@@ -1,7 +1,9 @@
 ---
 title: "Aproximación al problema del *fourth-corner*"
 author:
-  - Rodrigo R. Granjel^[Basque Center for Climate Change (BC3); rodrigo.granjel@bc3research.org]
+  - name: Rodrigo R. Granjel
+    affiliation: Basque Centre for Climate Change (BC3)
+    email: rodrigo.granjel@bc3research.org
 output:
     html_document:
       toc: false
@@ -9,6 +11,7 @@ output:
       theme: paper
       highlight: pygments
       df_print: paged
+lang: es-ES
 bibliography: references.bib
 csl: ecology-letters.csl
 link-citations: true
@@ -42,12 +45,18 @@ htmltools::tagList(
   xaringanExtra::use_clipboard(
     button_text = "<i class=\"fa fa-clipboard\"></i>",
     success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
-  ), rmarkdown::html_dependency_font_awesome()
+  ),
+  rmarkdown::html_dependency_font_awesome()
 )
 ```
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = FALSE)
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  cache = TRUE
+)
 ```
 
 <!--End setup-->
@@ -154,12 +163,14 @@ env_var <- 15 # número de variables ambientales para nuestros datos dummy
 
 ```{r seed_options, include=FALSE}
 # sembrar una semilla para asegurar la reproducibilidad
-seed <- c(5558,  # 1; por defecto
-          7120,  # 2; 7, + y -
-          9937,  # 3; 16, + y -
-          1840,  # 5; 4, solo +
-          5647,  # 6; 5, solo -
-          216)   # 7; zero
+seed <- c(
+  5558, # 1; por defecto
+  7120, # 2; 7, + y -
+  9937, # 3; 16, + y -
+  1840, # 5; 4, solo +
+  5647, # 6; 5, solo -
+  216
+) # 7; zero
 ```
 
 Y, a continuación, vamos a sembrar una semilla (*seed*). ¿Qué quiere decir esto? La semilla es un número natural que transforma lo estocástico en determinista. Esto es, al trabajar con funciones que generan datos aleatorios (por ejemplo, `runif(n)`, siendo `n` el número de elementos a generar), si no hemos plantado una semilla, cada vez que corramos la función los resultados generados cambiarán (¡probad a correr `runif(10)` sin semilla varias veces!). Sin embargo, cuando plantamos una semilla usando la función `set.seed()`, el resultado generado será siempre el mismo, y sólo cambiará si cambiamos la semilla. Aquí utilizaremos el número `r seed[1]` como nuestra semilla por defecto.
@@ -177,8 +188,10 @@ Matriz de abundancia de especies por localidad (*L*), con `r species` especies e
 
 ```{r dummy_L}
 # crear una base de datos de combinaciones de especie y sitio
-L <- expand.grid(species = paste0("sp", 1:species),
-                 sites = paste0("site", 1:sites))
+L <- expand.grid(
+  species = paste0("sp", 1:species),
+  sites = paste0("site", 1:sites)
+)
 
 # añadir una columna con los datos de abundancia
 L$value <- rpois(nrow(L), 30)
@@ -200,8 +213,10 @@ Matriz con datos de rasgos funcionales por especie (*Q*), con `r traits` rasgos 
 
 ```{r dummy_Q}
 # crear una base de datos de combinaciones de rasgos y especies
-Q <- expand.grid(species = paste0("sp", 1:species),
-                 traits = paste0("t", 1:traits))
+Q <- expand.grid(
+  species = paste0("sp", 1:species),
+  traits = paste0("t", 1:traits)
+)
 
 # añadir una columna con los datos cuantitativos
 Q$value <- round(runif(n = nrow(Q), 0, 1), 3)
@@ -223,8 +238,10 @@ Matriz con datos de variables ambientales por localidad (*R*), con `r env_var` v
 
 ```{r dummy_R}
 # crear una base de datos de comb. de variables ambientales y sitios
-R <- expand.grid(environ = paste0("env", 1:env_var),
-                 sites = paste0("site", 1:sites))
+R <- expand.grid(
+  environ = paste0("env", 1:env_var),
+  sites = paste0("site", 1:sites)
+)
 
 # Add a column with random quantitative data from 0 to 1
 R$value <- round(runif(n = nrow(R), 0, 1), 3)
@@ -248,36 +265,38 @@ Lo primero que vamos a hacer es observar cómo es la distribución de la abundan
 
 ```{r set theme}
 # estética general de los plots
-theme_set(theme_minimal() +
-            theme(axis.title = element_text(size = 15),
-                  axis.line = element_line(color = "black", linewidth = 0.5),
-                  panel.grid.major = element_blank(), 
-                  panel.grid.minor = element_blank(),
-                  axis.text = element_text(color = "black", size = 12),
-                  strip.text.x = element_text(size = 12),
-                  axis.ticks = element_line(color = "black")))
+theme_set(
+  theme_minimal() +
+    theme(
+      axis.title = element_text(size = 15),
+      axis.line = element_line(color = "black", linewidth = 0.5),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      axis.text = element_text(color = "black", size = 12),
+      strip.text.x = element_text(size = 12),
+      axis.ticks = element_line(color = "black")
+    )
+)
 ```
 
 ```{r explore_dummy2}
 # plot de abundancia por sitio
 L %>%
-  
+
   # pasamos los nombres de fila a una columna
-  rownames_to_column(var = "site") %>% 
-  
+  rownames_to_column(var = "site") %>%
+
   # transformamos la matrix para poder hacer el plot
-  pivot_longer(cols = -site,
-               names_to = "species",
-               values_to = "abundance") %>% 
-  
+  pivot_longer(cols = -site, names_to = "species", values_to = "abundance") %>%
+
   # añadimos el plot
-  ggplot(aes(x = abundance,
-             y = reorder(species, abundance, FUN = max),
-             color = site)) +
+  ggplot(aes(
+    x = abundance,
+    y = reorder(species, abundance, FUN = max),
+    color = site
+  )) +
   geom_point() + # gráfico de puntos
-  labs(x = "Abundancia",
-       y = "Organismo",
-       color = "Sitio") +
+  labs(x = "Abundancia", y = "Organismo", color = "Sitio") +
   theme(text = element_text(size = 18))
 ```
 
@@ -327,20 +346,27 @@ sdm_env <- traitglm(L, R) # modelo lineal generalizado (glm)
 # transformar y dataviz
 sdm_env$fourth.corner %>%
   as_tibble(rownames = "species") %>%
-  pivot_longer(cols = -species, names_to = "env_var", values_to = "value") %>% 
-  mutate(species = as.factor(str_extract(species, "sp\\d+")),
-         value = round(value, 5),
-         env_var = forcats::fct_inorder(env_var),
-         species = forcats::fct_reorder(species, as.numeric(str_extract(species, "\\d+")))) %>% 
+  pivot_longer(cols = -species, names_to = "env_var", values_to = "value") %>%
+  mutate(
+    species = as.factor(str_extract(species, "sp\\d+")),
+    value = round(value, 5),
+    env_var = forcats::fct_inorder(env_var),
+    species = forcats::fct_reorder(
+      species,
+      as.numeric(str_extract(species, "\\d+"))
+    )
+  ) %>%
 
   # mapa de calor
   ggplot(aes(x = env_var, y = fct_rev(species), fill = value)) +
   geom_raster() +
-  scale_fill_gradient2(low = "blue", mid = "white", high = "red",
-    midpoint = 0) +
-  labs(x = "Variables ambientales",
-       y = "Especies",
-       fill = "Coeficiente") +
+  scale_fill_gradient2(
+    low = "blue",
+    mid = "white",
+    high = "red",
+    midpoint = 0
+  ) +
+  labs(x = "Variables ambientales", y = "Especies", fill = "Coeficiente") +
   theme(axis.text.x = element_text(angle = 60, hjust = 1, vjust = 1))
 ```
 
@@ -368,19 +394,30 @@ plot(f.corner)
 # finalmente, podemos representar el mapa de calor
 f.corner$fourth.corner %>%
   as_tibble(rownames = "traits") %>%
-  pivot_longer(cols = -traits, names_to = "env_var", values_to = "value") %>% 
-  mutate(value = round(value, 5),
-         env_var = forcats::fct_inorder(env_var),
-         traits = forcats::fct_reorder(traits, as.numeric(str_extract(traits, "\\d+")))) %>% 
-  
+  pivot_longer(cols = -traits, names_to = "env_var", values_to = "value") %>%
+  mutate(
+    value = round(value, 5),
+    env_var = forcats::fct_inorder(env_var),
+    traits = forcats::fct_reorder(
+      traits,
+      as.numeric(str_extract(traits, "\\d+"))
+    )
+  ) %>%
+
   # mapa de calor
   ggplot(aes(x = env_var, y = fct_rev(traits), fill = value)) +
   geom_raster() +
-  scale_fill_gradient2(low = "blue", mid = "white", high = "red",
-    midpoint = 0) +
-  labs(x = "Variables ambientales",
-       y = "Rasgos funcionales",
-       fill = "Coeficiente") +
+  scale_fill_gradient2(
+    low = "blue",
+    mid = "white",
+    high = "red",
+    midpoint = 0
+  ) +
+  labs(
+    x = "Variables ambientales",
+    y = "Rasgos funcionales",
+    fill = "Coeficiente"
+  ) +
   theme(axis.text.x = element_text(angle = 60, hjust = 1, vjust = 1))
 ```
 
@@ -403,19 +440,30 @@ lasso$fourth.corner
 # y volvemos a representar el mapa de calor
 lasso$fourth.corner %>%
   as_tibble(rownames = "traits") %>%
-  pivot_longer(cols = -traits, names_to = "env_var", values_to = "value") %>% 
-  mutate(value = round(value, 5),
-         env_var = forcats::fct_inorder(env_var),
-         traits = forcats::fct_reorder(traits, as.numeric(str_extract(traits, "\\d+")))) %>% 
-  
+  pivot_longer(cols = -traits, names_to = "env_var", values_to = "value") %>%
+  mutate(
+    value = round(value, 5),
+    env_var = forcats::fct_inorder(env_var),
+    traits = forcats::fct_reorder(
+      traits,
+      as.numeric(str_extract(traits, "\\d+"))
+    )
+  ) %>%
+
   # mapa de calor
   ggplot(aes(x = env_var, y = fct_rev(traits), fill = value)) +
   geom_raster() +
-  scale_fill_gradient2(low = "blue", mid = "white", high = "red",
-    midpoint = 0) +
-  labs(x = "Variables ambientales",
-       y = "Rasgos funcionales",
-       fill = "Coeficiente") +
+  scale_fill_gradient2(
+    low = "blue",
+    mid = "white",
+    high = "red",
+    midpoint = 0
+  ) +
+  labs(
+    x = "Variables ambientales",
+    y = "Rasgos funcionales",
+    fill = "Coeficiente"
+  ) +
   theme(axis.text.x = element_text(angle = 60, hjust = 1, vjust = 1))
 ```
 
@@ -462,15 +510,32 @@ En la tabla siguiente se muestra la descripción de los rasgos funcionales de lo
 ```{r table_traits, echo=FALSE}
 traits <- list(
   c("X0.25cm", "X0.250.5cm", "X0.51cm", "X12cm", "X24cm", "X48cm", "X8cm"),
-  c("crenon", "epirithron", "metarithron", "hyporithron", "epipotamon", "metapotamon", "estuary"),
+  c(
+    "crenon",
+    "epirithron",
+    "metarithron",
+    "hyporithron",
+    "epipotamon",
+    "metapotamon",
+    "estuary"
+  ),
   c("lowlands", "piedmont.level", "alpine.level"),
   c("null", "slow.less.25.cms", "medium.25.50.cmlesss", "fast.more.50.cms"),
   c("oligotrophic", "mesotrophic", "eutrophic"),
-  c("xenosaprobic", "oligosaprobic", "b.mesosaprobic", "a.mesosaprobic", "polysaprobic"),
+  c(
+    "xenosaprobic",
+    "oligosaprobic",
+    "b.mesosaprobic",
+    "a.mesosaprobic",
+    "polysaprobic"
+  ),
   c("less.4", "more.4.4.5", "more.4.5.5", "more.5.5.5", "more.5.5.6", "more.6")
 )
 
-traits <- lapply(traits, function(x) {length(x) <- max(lengths(traits)); x})
+traits <- lapply(traits, function(x) {
+  length(x) <- max(lengths(traits))
+  x
+})
 
 traits_df <- data.frame(
   var1 = traits[[1]],
@@ -499,18 +564,67 @@ explanation <- c(
   "pH del medio (preferencia)"
 )
 
-kable(traits_df, format = "html", caption = "Rasgos funcionales de los organismos:",
-      align = rep("c", 7)) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensated"),
-                full_width = TRUE, position = "center") %>% 
-  column_spec(1, bold = TRUE) %>% 
-  group_rows(explanation[1], start_row = 1, end_row = 1, bold = FALSE, italic = TRUE) %>% 
-  group_rows(explanation[2], start_row = 2, end_row = 2, bold = FALSE, italic = TRUE) %>% 
-  group_rows(explanation[3], start_row = 3, end_row = 3, bold = FALSE, italic = TRUE) %>% 
-  group_rows(explanation[4], start_row = 4, end_row = 4, bold = FALSE, italic = TRUE) %>% 
-  group_rows(explanation[5], start_row = 5, end_row = 5, bold = FALSE, italic = TRUE) %>% 
-  group_rows(explanation[6], start_row = 6, end_row = 6, bold = FALSE, italic = TRUE) %>% 
-  group_rows(explanation[7], start_row = 7, end_row = 7, bold = FALSE, italic = TRUE) %>% 
+kable(
+  traits_df,
+  format = "html",
+  caption = "Rasgos funcionales de los organismos:",
+  align = rep("c", 7)
+) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensated"),
+    full_width = TRUE,
+    position = "center"
+  ) %>%
+  column_spec(1, bold = TRUE) %>%
+  group_rows(
+    explanation[1],
+    start_row = 1,
+    end_row = 1,
+    bold = FALSE,
+    italic = TRUE
+  ) %>%
+  group_rows(
+    explanation[2],
+    start_row = 2,
+    end_row = 2,
+    bold = FALSE,
+    italic = TRUE
+  ) %>%
+  group_rows(
+    explanation[3],
+    start_row = 3,
+    end_row = 3,
+    bold = FALSE,
+    italic = TRUE
+  ) %>%
+  group_rows(
+    explanation[4],
+    start_row = 4,
+    end_row = 4,
+    bold = FALSE,
+    italic = TRUE
+  ) %>%
+  group_rows(
+    explanation[5],
+    start_row = 5,
+    end_row = 5,
+    bold = FALSE,
+    italic = TRUE
+  ) %>%
+  group_rows(
+    explanation[6],
+    start_row = 6,
+    end_row = 6,
+    bold = FALSE,
+    italic = TRUE
+  ) %>%
+  group_rows(
+    explanation[7],
+    start_row = 7,
+    end_row = 7,
+    bold = FALSE,
+    italic = TRUE
+  ) %>%
   add_header_above(c(" ", "Valor del rasgo" = 7))
 ```
 
@@ -533,7 +647,7 @@ head(R)
 En la siguiente tabla se proporciona información sobre el significado de las variables ambientales medidas en los espacios naturales muestreados.
 
 ```{r table_env_var, echo=FALSE}
-env_var <- 
+env_var <-
   data.frame(
     Variable = names(R),
     Descripción = c(
@@ -557,9 +671,16 @@ env_var <-
     )
   )
 
-kable(env_var, format = "html", caption = "Explicación de las variables ambientales utilizadas:") %>% 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensated"),
-                full_width = TRUE, position = "center") %>% 
+kable(
+  env_var,
+  format = "html",
+  caption = "Explicación de las variables ambientales utilizadas:"
+) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensated"),
+    full_width = TRUE,
+    position = "center"
+  ) %>%
   column_spec(1, bold = TRUE)
 ```
 
@@ -580,23 +701,21 @@ Vamos a hacer un par de gráficos que nos ayuden a entender mejor qué datos ten
 ```{r abundance_site_real, fig.height=12, fig.width=8}
 # plot de abundancia por sitio
 L %>%
-  
+
   # rownames (sites) to column to plot
-  rownames_to_column(var = "site") %>% 
-  
+  rownames_to_column(var = "site") %>%
+
   # transformamos la matrix para poder hacer el plot
-  pivot_longer(cols = -site,
-               names_to = "species",
-               values_to = "abundance") %>% 
-  
+  pivot_longer(cols = -site, names_to = "species", values_to = "abundance") %>%
+
   # añadimos el plot
-  ggplot(aes(x = abundance,
-             y = reorder(species, abundance, FUN = max),
-             color = site)) +
+  ggplot(aes(
+    x = abundance,
+    y = reorder(species, abundance, FUN = max),
+    color = site
+  )) +
   geom_point() + # gráfico de puntos
-  labs(x = "Abundancia",
-       y = "Familias",
-       color = "Sitio") +
+  labs(x = "Abundancia", y = "Familias", color = "Sitio") +
   theme(text = element_text(size = 18))
 ```
 
@@ -614,20 +733,28 @@ f.corner <- traitglm(L, R, Q)
 
 f.corner$fourth.corner %>%
   as_tibble(rownames = "traits") %>%
-  pivot_longer(cols = -traits, names_to = "env_var", values_to = "value") %>% 
-  mutate(value = round(value, 5),
-         env_var = factor(env_var, levels = sort(unique(env_var))),
-         traits = factor(traits, levels = sort(unique(traits), decreasing = TRUE))) %>% 
-  
+  pivot_longer(cols = -traits, names_to = "env_var", values_to = "value") %>%
+  mutate(
+    value = round(value, 5),
+    env_var = factor(env_var, levels = sort(unique(env_var))),
+    traits = factor(traits, levels = sort(unique(traits), decreasing = TRUE))
+  ) %>%
+
   # mapa de calor
   ggplot(aes(x = env_var, y = traits, fill = value)) +
   geom_raster() +
-  scale_fill_gradient2(low = "blue", mid = "white", high = "red",
-                       midpoint = 0) +
-  labs(title = "Modelo independiente del espacio natural",
-       x = "Var. ambientales",
-       y = "Rasgos func.",
-       fill = "Coef.") +
+  scale_fill_gradient2(
+    low = "blue",
+    mid = "white",
+    high = "red",
+    midpoint = 0
+  ) +
+  labs(
+    title = "Modelo independiente del espacio natural",
+    x = "Var. ambientales",
+    y = "Rasgos func.",
+    fill = "Coef."
+  ) +
   theme(axis.text.x = element_text(angle = 60, hjust = 1, vjust = 1))
 ```
 
@@ -638,20 +765,28 @@ lasso <- traitglm(L, R, Q, method = "glm1path")
 
 lasso$fourth.corner %>%
   as_tibble(rownames = "traits") %>%
-  pivot_longer(cols = -traits, names_to = "env_var", values_to = "value") %>% 
-  mutate(value = round(value, 5),
-         env_var = factor(env_var, levels = sort(unique(env_var))),
-         traits = factor(traits, levels = sort(unique(traits), decreasing = TRUE))) %>% 
-  
+  pivot_longer(cols = -traits, names_to = "env_var", values_to = "value") %>%
+  mutate(
+    value = round(value, 5),
+    env_var = factor(env_var, levels = sort(unique(env_var))),
+    traits = factor(traits, levels = sort(unique(traits), decreasing = TRUE))
+  ) %>%
+
   # mapa de calor
   ggplot(aes(x = env_var, y = traits, fill = value)) +
   geom_raster() +
-  scale_fill_gradient2(low = "blue", mid = "white", high = "red",
-                       midpoint = 0) +
-  labs(title = "Modelo independiente del espacio natural",
-       x = "Var. ambientales",
-       y = "Rasgos func.",
-       fill = "Coef.") +
+  scale_fill_gradient2(
+    low = "blue",
+    mid = "white",
+    high = "red",
+    midpoint = 0
+  ) +
+  labs(
+    title = "Modelo independiente del espacio natural",
+    x = "Var. ambientales",
+    y = "Rasgos func.",
+    fill = "Coef."
+  ) +
   theme(axis.text.x = element_text(angle = 60, hjust = 1, vjust = 1))
 ```
 
@@ -679,58 +814,71 @@ site_list <- c("AIZK", "ARAL", "ARTI", "GORB", "IZKI")
 plot_list <- list()
 coef_list <- list()
 
-for (i in 1:length(site_list)){
-  
+for (i in 1:length(site_list)) {
   l <- L[grepl(site_list[i], rownames(L)), ]
   r <- R[grepl(site_list[i], rownames(R)), ]
 
   # perform lasso with the matrices
   lasso <- traitglm(l, r, Q, method = "glm1path")
   coef_list[[i]] <- as.data.frame(lasso$fourth.corner)
-  
+
   plot_list[[i]] <- lasso$fourth.corner %>%
     as_tibble(rownames = "traits") %>%
-    pivot_longer(cols = -traits, names_to = "env_var", values_to = "value") %>% 
-    mutate(value = round(value, 5),
-           env_var = factor(env_var, levels = sort(unique(env_var))),
-           traits = factor(traits, levels = sort(unique(traits), decreasing = TRUE))) %>% 
-    
+    pivot_longer(cols = -traits, names_to = "env_var", values_to = "value") %>%
+    mutate(
+      value = round(value, 5),
+      env_var = factor(env_var, levels = sort(unique(env_var))),
+      traits = factor(traits, levels = sort(unique(traits), decreasing = TRUE))
+    ) %>%
+
     # mapa de calor
     ggplot(aes(x = env_var, y = traits, fill = value)) +
     geom_raster() +
-    scale_fill_gradient2(low = "blue", mid = "white", high = "red",
-                         midpoint = 0) +
-    labs(title = site_list[i],
-         x = " ",
-         y = "Rasgos func.",
-         fill = "Coef.") +
-    theme(axis.text.x = element_text(size = 8,angle = 60, hjust = 1, vjust = 1),
-          axis.text.y = element_text(size = 8),
-          axis.title = element_text(size = 10),
-          title = element_text(face = "bold"))
-
+    scale_fill_gradient2(
+      low = "blue",
+      mid = "white",
+      high = "red",
+      midpoint = 0
+    ) +
+    labs(title = site_list[i], x = " ", y = "Rasgos func.", fill = "Coef.") +
+    theme(
+      axis.text.x = element_text(size = 8, angle = 60, hjust = 1, vjust = 1),
+      axis.text.y = element_text(size = 8),
+      axis.title = element_text(size = 10),
+      title = element_text(face = "bold")
+    )
 }
 
 plot_list[[length(plot_list) + 1]] <- Reduce("*", coef_list) %>%
   as_tibble(rownames = "traits") %>%
-  pivot_longer(cols = -traits, names_to = "env_var", values_to = "value") %>% 
-  mutate(value = round(value, 5),
-         env_var = factor(env_var, levels = sort(unique(env_var))),
-         traits = factor(traits, levels = sort(unique(traits), decreasing = TRUE))) %>% 
-  
+  pivot_longer(cols = -traits, names_to = "env_var", values_to = "value") %>%
+  mutate(
+    value = round(value, 5),
+    env_var = factor(env_var, levels = sort(unique(env_var))),
+    traits = factor(traits, levels = sort(unique(traits), decreasing = TRUE))
+  ) %>%
+
   # mapa de calor
   ggplot(aes(x = env_var, y = traits, fill = value)) +
   geom_raster() +
-  scale_fill_gradient2(low = "blue", mid = "white", high = "red",
-                       midpoint = 0) +
-  labs(title = "Interacciones comunes",
-       x = " ",
-       y = "Rasgos func.",
-       fill = "Coef.") +
-    theme(axis.text.x = element_text(size = 8,angle = 60, hjust = 1, vjust = 1),
-          axis.text.y = element_text(size = 8),
-          axis.title = element_text(size = 10),
-          title = element_text(face = "bold"))
+  scale_fill_gradient2(
+    low = "blue",
+    mid = "white",
+    high = "red",
+    midpoint = 0
+  ) +
+  labs(
+    title = "Interacciones comunes",
+    x = " ",
+    y = "Rasgos func.",
+    fill = "Coef."
+  ) +
+  theme(
+    axis.text.x = element_text(size = 8, angle = 60, hjust = 1, vjust = 1),
+    axis.text.y = element_text(size = 8),
+    axis.title = element_text(size = 10),
+    title = element_text(face = "bold")
+  )
 
 ggarrange(plotlist = plot_list, ncol = 2, nrow = 3, common.legend = FALSE)
 ```
