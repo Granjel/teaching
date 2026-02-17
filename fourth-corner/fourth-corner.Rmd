@@ -47,8 +47,6 @@ htmltools::tagList(
     success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
   ),
   rmarkdown::html_dependency_font_awesome()
-  ),
-  rmarkdown::html_dependency_font_awesome()
 )
 ```
 
