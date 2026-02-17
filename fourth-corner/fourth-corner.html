@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-<<<<<<< HEAD
-<html xmlns="http://www.w3.org/1999/xhtml" lang="ES-es" xml:lang="ES-es"><head>
-=======
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es-ES" xml:lang="es-ES"><head>
->>>>>>> bdfc6de6d05d72429052518cb7489e9d6b28def6
 
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.8.27">
@@ -156,12 +152,6 @@ window.Quarto = {
 </div>
 
 
-<<<<<<< HEAD
-
-<div class="quarto-title-meta">
-
-    
-=======
 <div class="quarto-title-meta-author">
   <div class="quarto-title-meta-heading">Autor/a</div>
   <div class="quarto-title-meta-heading">Afiliación</div>
@@ -179,7 +169,6 @@ window.Quarto = {
 <div class="quarto-title-meta">
 
       
->>>>>>> bdfc6de6d05d72429052518cb7489e9d6b28def6
   
     
   </div>
@@ -415,11 +404,7 @@ site6 0.779 0.694 0.296</code></pre>
 <section id="exploración-de-los-datos" class="level3">
 <h3 class="anchored" data-anchor-id="exploración-de-los-datos">Exploración de los datos</h3>
 <blockquote class="blockquote">
-<<<<<<< HEAD
 <p>El objetivo de esta sesión no es aprender R, ni mucho menos dominar la visualización de datos, pero sí me gustaría que os lleváseis una idea de que estas herramientas están disponibles y no son tan innaccesibles como pueden parecer.</p>
-=======
-<p>El objetivo de esta sesión no es aprender R, ni mucho menos dominar la visualización de datos (que requiere mucha práctica), pero sí me gustaría que os lleváseis una idea de que estas herramientas están disponibles y no son tan innaccesibles como pueden parecer.</p>
->>>>>>> bdfc6de6d05d72429052518cb7489e9d6b28def6
 </blockquote>
 <p>Lo primero que vamos a hacer es observar cómo es la distribución de la abundancia de organismos en las diferentes poblaciones. Para ello, vamos a utilizar el paquete <code>ggplot2</code>, perteneciente al <code>tidyverse</code>, del que ya hablamos anteriormente. La función <code>ggplot()</code> es una de las más poderosas del lenguaje R para crear visualizaciones de datos. Funciona por capas: primero, <code>ggplot</code> crea un espacio o lienzo definido por ciertas variables de una base de datos. Dicho lienzo puede ser completado con la adición de distintas funciones de representación de los datos, como <code>geom_point()</code> o <code>geom_line()</code> que añaden una nube de puntos o una línea, respectivamente. Asimismo, funciones cómo <code>theme()</code> se encargan de cuidar los detalles estéticos del gráfico, como el tamaño de la letra de los rótulos, el color de fondo o la presencia o ausencia de ejes. Para más comodidad, en lugar de añadir la estética para cada gráfico, podemos utilizar la función <code>theme_set()</code> para definir una estética global que se aplica a todos los gráficos.</p>
 <div class="cell">
@@ -494,11 +479,7 @@ site6 0.779 0.694 0.296</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># análisis de la varianza para ver si el sitio explica la abundancia</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>(anov <span class="ot">&lt;-</span> <span class="fu">anova</span>(mod, <span class="at">nBoot =</span> <span class="dv">999</span>))</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<<<<<<< HEAD
-<pre><code>Time elapsed: 0 hr 0 min 4 sec</code></pre>
-=======
-<pre><code>Time elapsed: 0 hr 0 min 5 sec</code></pre>
->>>>>>> bdfc6de6d05d72429052518cb7489e9d6b28def6
+<pre><code>Time elapsed: 0 hr 0 min 1 sec</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Deviance Table
