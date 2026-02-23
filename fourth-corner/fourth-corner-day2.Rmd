@@ -596,15 +596,22 @@ print(lasso$fourth.corner)
 Como vemos, hemos de ir con ojo con las representaciones visuales, ya que una escala de colores puede darnos una idea errónea de los resultados.
 
 
-## Ejercicio --- Parte 2
+## ¿Y para cada parque natural?
 
-El objetivo de este ejercicio final es resolver la siguiente pregunta: ¿qué ocurre con las interacciones rasgo-ambiente si analizamos cada espacio natural por separado?
+<br>
 
+> **Ejercicio**
+>
+> El objetivo de este ejercicio final es resolver la siguiente pregunta: ¿qué ocurre con las interacciones rasgo-ambiente si analizamos cada espacio natural por separado?
+>
 > Pista: primero tenemos que seleccionar solamente las filas que correspondan al espacio natural que nos interese. Esto lo podemos hacer con la función `grepl()` del siguiente modo: `X[grepl("CODE", rownames(X)), ]`, siendo `X` la matriz que corresponda y siendo `CODE` el código del espacio natural deseado. El resto del proceso es idéntico a lo explicado anteriormente: `traitglm()` con las tres matrices y el argumento para usar lasso.
 
-Aquí los resultados:
+<br>
+
+<!-- note change eval = true to show the result! -->
 
 ```{r espacios_separados, echo=FALSE, fig.height=11, fig.width=8}
+#| eval: false
 # filter by site
 site_list <- c("AIZK", "ARAL", "ARTI", "GORB", "IZKI")
 plot_list <- list()

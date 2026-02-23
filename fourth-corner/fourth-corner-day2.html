@@ -310,6 +310,11 @@ t15     0     0     0     0 0.000000000</code></pre>
 </div>
 </div>
 <p><br></p>
+<blockquote class="blockquote">
+<p><strong>Discusión</strong></p>
+<p>¿Es más útil la información que obtenemos después de aplicar lasso? ¿Qué decisiones podríamos tomar a partir de este gráfico?</p>
+</blockquote>
+<p><br></p>
 </section>
 </section>
 <section id="parte-2-aplicación-a-sistemas-fluviales" class="level1">
@@ -889,22 +894,15 @@ var22       -0.037800510           0.00000000        0.034095625</code></pre>
 <p>Como vemos, hemos de ir con ojo con las representaciones visuales, ya que una escala de colores puede darnos una idea errónea de los resultados.</p>
 </section>
 </section>
-<section id="ejercicio-parte-2" class="level2">
-<h2 class="anchored" data-anchor-id="ejercicio-parte-2">Ejercicio — Parte 2</h2>
-<p>El objetivo de este ejercicio final es resolver la siguiente pregunta: ¿qué ocurre con las interacciones rasgo-ambiente si analizamos cada espacio natural por separado?</p>
+<section id="y-para-cada-parque-natural" class="level2">
+<h2 class="anchored" data-anchor-id="y-para-cada-parque-natural">¿Y para cada parque natural?</h2>
+<p><br></p>
 <blockquote class="blockquote">
+<p><strong>Ejercicio</strong></p>
+<p>El objetivo de este ejercicio final es resolver la siguiente pregunta: ¿qué ocurre con las interacciones rasgo-ambiente si analizamos cada espacio natural por separado?</p>
 <p>Pista: primero tenemos que seleccionar solamente las filas que correspondan al espacio natural que nos interese. Esto lo podemos hacer con la función <code>grepl()</code> del siguiente modo: <code>X[grepl("CODE", rownames(X)), ]</code>, siendo <code>X</code> la matriz que corresponda y siendo <code>CODE</code> el código del espacio natural deseado. El resto del proceso es idéntico a lo explicado anteriormente: <code>traitglm()</code> con las tres matrices y el argumento para usar lasso.</p>
 </blockquote>
-<p>Aquí los resultados:</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="fourth-corner-day2_files/figure-html/espacios_separados-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
-</div>
-</div>
+<p><br></p>
 </section>
 </section>
 <section id="referencias" class="level1">
