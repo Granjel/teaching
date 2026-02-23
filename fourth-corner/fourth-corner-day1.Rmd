@@ -1,0 +1,481 @@
+---
+title: "Seminario: SDMs, rasgos funcionales y la cuarta esquina"
+subtitle: "Diversidad Biológica en los Ambientes de Agua Dulce<br>Máster en Biodiversidad, Funcionamiento y Gestión de Ecosistemas"
+date: 2026-02-25
+author:
+  - name: Rodrigo R. Granjel
+    affiliation: Basque Centre for Climate Change (BC3)
+    email: rodrigo.granjel@bc3research.org
+output:
+    html_document:
+      toc: false
+      toc_float: false
+      theme: paper
+      highlight: pygments
+      df_print: paged
+lang: es-ES
+bibliography: references.bib
+csl: ecology-letters.csl
+link-citations: true
+---
+
+<!--Begin setup-->
+
+```{=html}
+<style type="text/css">
+body, td {font-size: 16px}
+code.r {font-size: 16px}
+pre {font-size: 16px}
+body {text-align: justify}
+h1 {font-size: 30px}
+h2 {font-size: 26px}
+h3 {font-size: 24px}
+h4 {font-size: 20px}
+img {display: block; margin: 0 auto;}
+</style>
+```
+
+```{=html}
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({TeX: {equationNumbers: {autoNumber: "AMS"}}});
+</script>
+```
+
+```{r xaringanExtra-clipboard, echo=FALSE, include=FALSE}
+#copy to clipboard button
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  cache = FALSE
+)
+```
+
+<!--End setup-->
+
+# Parte 1 --- Introducción
+
+------------------------------------------------------------------------
+
+<br>
+
+> **Ejercicio 1**
+>
+> Durante estos dos días, seréis los gestores de cinco espacios naturales de los montes vascos.
+>
+> Vamos a repartir la clase en cinco grupos, cada uno de los cuales se encargará de gestionar uno de estos espacios naturales: **Aizkorri** (Gipuzkoa), **Aralar** (Gipuzkoa), **Artikutza** (Nafarroa), **Gorbeia** (Bizkaia/Araba), e **Izki** (Araba).
+>
+> Uno de vosotros será el portavoz del equipo de gerencia del parque.
+>
+> Lamentablemente, vuestro presupuesto es limitado, así que solamente podéis llevar a cabo una acción para mejorar la **conservación de la biodiversidad en los sistemas de agua dulce** de vuestro espacio natural.
+>
+> Afortunadamente, para ayudaros a tomar una decisión, tenéis a vuestra disposición unos datos maravillosos de **abundancia** de macroinvertebrados en diez localidades dentro de cada parque natural, así como medidas de diferentes **variables ambientales** en dichas localidades y de **rasgos funcionales** de cada organismo.
+>
+> ¿Por dónde empezaríais?
+
+<br>
+
+<center>
+
+![Imágenes de los cinco espacios naturales en los montes vascos. De izquierda a derecha y de arriba a abajo: [**Aizkorri**](https://www.guide-du-paysbasque.com/es/turismo/descubrir/lugares-turisticos/parajes-naturales/cegama-416/parque-natural-de-aizkorri-6819.html) (Gipuzkoa), [**Aralar**](https://turismo.euskadi.eus/es/espacios-naturales/parque-natural-de-aralar/webtur00-content/es/) (Gipuzkoa), [**Artikutza**](https://poliki.net/otono-en-artikutza) (Nafarroa), [**Gorbeia**](https://www.euskadi.eus/gobierno-vasco/-/es/espacios-naturales/parque-natural-de-gorbeia/) (Bizkaia/Araba) e [**Izki**](https://es.wikipedia.org/wiki/Parque_natural_de_Izki) (Araba). Créditos en los enlaces.](parques-naturales-montes-vascos.jpg)
+
+</center>
+
+<br>
+
+## Modelos de distribución de especies (SDMs)
+
+El modelado de distribución de especies es una herramienta clave en ecología y biogeografía que permite predecir y entender cómo y por qué ciertas especies se distribuyen en un hábitat o espacio geográfico determinado. Tradicionalmente, utiliza datos demográficos de las especies (bien presencia/ausencia, bien abundancia) junto con variables ambientales para construir modelos que simulan su distribución en diferentes escenarios. Estos modelos son fundamentales para la conservación de la biodiversidad, el manejo de ecosistemas, la restauración de hábitats y el estudio de los impactos del cambio climático sobre las especies. Además, proporcionan información crucial para la toma de decisiones en, por ejemplo, la planificación ambiental y el diseño de áreas protegidas.
+
+<br>
+
+<center>
+
+![Esquema tomado de [Wikipedia](https://en.wikipedia.org/wiki/Species_distribution_modelling), creado por el usuario Ranvald.](predicting-habitats.png){width=700}
+
+</center>
+
+<br>
+
+## Rasgos funcionales: cuarta esquina o *fourth-corner*
+
+El problema de la cuarta esquina (*fourth-corner*) trata de relacionar los rasgos de los organismos con el entorno en el que estos se encuentran. Es una aproximación más holística al modelado de distribución de especies que nos permite responder a preguntas ecológicas diferentes. ¿Por qué recibe el nombre de la **cuarta esquina**? Se debe a que involucra tres matrices para calcular una cuarta, como vemos en el siguiente esquema:
+
+<br>
+
+<center>
+
+![Esquema modificado de @brown2014.](fourth-corner-matrices.jpg)
+
+</center>
+
+<br>
+
+-   La matriz *L* contiene información de especies por localidad
+-   La matriz *R* contiene información del ambiente de dichas localidades
+-   La matriz *Q* contiene información de los rasgos de las especies
+-   La matriz *D*, entonces, contendría información de la relación rasgo-ambiente
+
+<br>
+
+Y, ¿por qué decimos que es un **problema**? Esto se debe a que no es nada sencillo calcular dicha matriz. En los últimos 30 años ha habido dos propuestas principales:
+
+- Análisis *RLQ* [@dolédec1996]: consiste en un enfoque exploratorio que construye ordenaciones conjuntas de variables ambientales y rasgos mediante descomposición de valores singulares, proporcionando una visión cualitativa de asociaciones generales entre rasgos y ambiente (panel **a** de la figura a continuación)
+- Pruebas de hipótesis [@legendre1997]: consiste en un enfoque de álgebra matricial en el que se realizan pruebas de permutación sobre las matrices *R*, *L* y *Q* para determinar una matriz *D* que resume qué asociaciones entre variables ambientales y rasgos son significativas, sin proporcionar detalles sobre la intensidad de estas interacciones (panel **b** de la figura a continuación)
+
+<br>
+
+<center>
+
+![Aproximaciones al problema de la cuarta esquina. Modificado de @brown2014.](aproximaciones.jpg)
+</center>
+
+<br>
+
+Aunque ambas soluciones cumplen diferentes propósitos, no proporcionan una solución cuantitativa para la cuarta esquina y, por tanto, no nos permiten entender la magnitud de las interacciones entre rasgos y ambiente. En los pasos siguientes, veremos cómo podemos hacer esto utilizando modelos lineales generalizados con las tres matrices, siguiendo la solución propuesta por @brown2014.
+
+<br>
+
+## Proceso de análisis (*workflow*)
+
+<br>
+
+> **Pregunta**
+>
+> ¿Cómo vamos de R?
+
+<br>
+
+### Librerías de R
+
+En primer lugar, cargaremos las librerías de R que vamos a utilizar a lo largo de nuestros análisis. Las **librerías o paquetes** son recopilaciones de funciones, generalmente sobre un temática específica, que nos sirven para realizar procesos en R, como manejo o análisis de datos, de una forma estandarizada y rápida. Aunque estos paquetes suelen estar escritos por personas que se dedican a la programación o a la ciencia, R es una comunidad de software libre, así que cualquier persona que tenga una metodología y quiera compartirla con la comunidad de usuarios de R puede crear su propio paquete. Los paquetes de R pueden instalarse directamente a través del [CRAN](https://cran.r-project.org/) utilizando la función `install_packages()` con el nombre del paquete como argumento de la función, entre comillas (por ejemplo: `install.packages("tidyverse")`). En ocasiones, también pueden instalarse directamente desde las cuentas de [GitHub](https://github.com/) de los usuarios. Los paquetes solo necesitan instalarse una vez en un ordenador (aunque conviene estar informado sobre posibles actualizaciones). Sin embargo, cada vez que iniciamos una nueva sesión de R hemos de cargar esos paquetes. Esto se hace usando la función `library()`, que es la forma de decirle a nuestro programa que queremos utilizar las funciones que el paquete contiene.
+
+A continuación, pues, instalamos las librerías a utilizar:
+
+```{r install_packages, eval=FALSE}
+install.packages("tidyverse") # manipulación, transformación y dataviz
+install.packages("mvabund") # manupilación y análisis de datos multivariantes
+```
+
+Y las cargamos:
+
+```{r load_packages}
+# fíjate en que ya no hacen falta las comillas para cargar los paquetes
+library(tidyverse)
+library(mvabund)
+```
+
+```{r load_ggpubr, echo=FALSE}
+library(ggpubr)
+```
+
+
+Estos paquetes son:
+
+-   `tidyverse` [@wickham2019], que es en realidad una colección de paquetes de programación funcional que sirven para la manipulación de datos de forma más eficiente, utilizando tuberías (*pipes*) para enlazar elementos. La *pipe* es `%>%`, que veremos mucho en el código en este documento. Aunque parezca poco tostón escribir `%`, `>` y `%`, podéis insertarla automáticamente presionando las teclas `shift + control + m` en Windows (o `shift + command + m` en Mac).
+
+-   `mvabund` [@wang2012], que es un paquete para modelizar datos de abundancia en ecología de comunidades y que contiene las funciones que utilizaremos en el análisis de *fourth-corner*.
+
+
+### Datos *dummy*
+
+Vamos a crear matrices con datos ficticios (lo que se llama en inglés datos *dummy*) para aprender cómo se utiliza esta técnica. Lo primero que haremos será seleccionar cuántas especies, cuántos rasgos funcionales, cuántas variables ambientales y cuántos sitios o localidades queremos:
+
+```{r number_of_variables}
+species <- 20 # número de especies para nuestros datos dummy
+sites <- 10 # número de sitios o localidades para nuestros datos dummy
+traits <- 15 # número de rasgos funcionales para nuestros datos dummy
+env_var <- 15 # número de variables ambientales para nuestros datos dummy
+```
+
+```{r seed_options, include=FALSE}
+# sembrar una semilla para asegurar la reproducibilidad
+seed <- c(
+  5558, # 1; por defecto
+  7120, # 2; 7, + y -
+  9937, # 3; 16, + y -
+  1840, # 5; 4, solo +
+  5647, # 6; 5, solo -
+  216
+) # 7; zero
+```
+
+Y, a continuación, vamos a sembrar una semilla (*seed*). ¿Qué quiere decir esto? La semilla es un número natural que transforma lo estocástico en determinista. Esto es, al trabajar con funciones que generan datos aleatorios (por ejemplo, `runif(n)`, siendo `n` el número de elementos a generar), si no hemos plantado una semilla, cada vez que corramos la función los resultados generados cambiarán (¡probad a correr `runif(10)` sin semilla varias veces!). Sin embargo, cuando plantamos una semilla usando la función `set.seed()`, el resultado generado será siempre el mismo, y sólo cambiará si cambiamos la semilla.
+
+Por lo tanto, para generar datos diferentes en cada parque natural, cada equipo de gestores va a usar una semilla distinta:
+
+- Aizkorri: **`r seed[2]`**
+- Aralar: **`r seed[3]`**
+- Artikutza: **`r seed[4]`**
+- Gorbeia: **`r seed[5]`**
+- Izki: **`r seed[6]`**
+
+Yo voy a hacer los análisis en paralelo usando mi propia semilla, la `r seed[1]`.
+
+```{r seed}
+set.seed(5558)
+```
+
+Finalmente, vamos a crear las matrices necesarias para los análisis. Tenemos en mente que, aunque en este ejercicio estamos generando datos ficticios, en la práctica estas matrices comprenderían datos reales de nuestro sistema de estudio. La cuestión es que estos datos deben estar organizados en las siguientes matrices con la siguiente estructura:
+
+
+#### Matriz *L*
+
+Matriz de abundancia de especies por localidad (*L*), con `r species` especies en columnas y `r sites` localidades en filas.
+
+```{r dummy_L}
+# crear una base de datos de combinaciones de especie y sitio
+L <- expand.grid(
+  species = paste0("sp", 1:species),
+  sites = paste0("site", 1:sites)
+)
+
+# añadir una columna con los datos de abundancia
+L$value <- rpois(nrow(L), 30)
+
+# incorporar los datos a una matriz
+L <- L %>%
+  spread(key = species, value = value) %>%
+  column_to_rownames(var = "sites") %>%
+  as.data.frame()
+
+# observar las primeras filas de dicha matriz
+head(L)
+```
+
+
+#### Matriz *Q*
+
+Matriz con datos de rasgos funcionales por especie (*Q*), con `r traits` rasgos en filas y `r species` especies en columnas.
+
+```{r dummy_Q}
+# crear una base de datos de combinaciones de rasgos y especies
+Q <- expand.grid(
+  species = paste0("sp", 1:species),
+  traits = paste0("t", 1:traits)
+)
+
+# añadir una columna con los datos cuantitativos
+Q$value <- round(runif(n = nrow(Q), 0, 1), 3)
+
+# incorporar los datos a una matriz
+Q <- Q %>%
+  spread(key = species, value = value) %>%
+  column_to_rownames(var = "traits") %>%
+  as.data.frame()
+
+# observar las primeras filas de dicha matriz
+head(Q)
+```
+
+
+#### 2.2. Matriz *R*
+
+Matriz con datos de variables ambientales por localidad (*R*), con `r env_var` variables ambientales y `r sites` localidades.
+
+```{r dummy_R}
+# crear una base de datos de combinaciones de variables ambientales y sitios
+R <- expand.grid(
+  environ = paste0("env", 1:env_var),
+  sites = paste0("site", 1:sites)
+)
+
+# Add a column with random quantitative data from 0 to 1
+R$value <- round(runif(n = nrow(R), 0, 1), 3)
+
+# incorporar los datos a una matriz
+R <- R %>%
+  spread(key = environ, value = value) %>%
+  column_to_rownames(var = "sites") %>%
+  as.data.frame()
+
+# observar las primeras filas de dicha matriz
+head(R)
+```
+
+
+### Exploración de los datos
+
+> El objetivo de esta sesión no es aprender R, ni mucho menos dominar la visualización de datos, pero sí me gustaría que os lleváseis una idea de que estas herramientas están disponibles y no son tan innaccesibles como pueden parecer.
+
+Lo primero que vamos a hacer es observar cómo es la distribución de la abundancia de organismos en las diferentes poblaciones. Para ello, vamos a utilizar el paquete `ggplot2`, perteneciente al `tidyverse`, del que ya hablamos anteriormente. La función `ggplot()` es una de las más poderosas del lenguaje R para crear visualizaciones de datos. Funciona por capas: primero, `ggplot` crea un espacio o lienzo definido por ciertas variables de una base de datos. Dicho lienzo puede ser completado con la adición de distintas funciones de representación de los datos, como `geom_point()` o `geom_line()` que añaden una nube de puntos o una línea, respectivamente. Asimismo, funciones cómo `theme()` se encargan de cuidar los detalles estéticos del gráfico, como el tamaño de la letra de los rótulos, el color de fondo o la presencia o ausencia de ejes. Para más comodidad, en lugar de añadir la estética para cada gráfico, podemos utilizar la función `theme_set()` para definir una estética global que se aplica a todos los gráficos.
+
+```{r set theme}
+# estética general de los plots
+theme_set(
+  theme_minimal() +
+    theme(
+      axis.title = element_text(size = 15),
+      axis.line = element_line(color = "black", linewidth = 0.5),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      axis.text = element_text(color = "black", size = 12),
+      strip.text.x = element_text(size = 12),
+      axis.ticks = element_line(color = "black")
+    )
+)
+```
+
+```{r explore_dummy2}
+# plot de abundancia por sitio
+L %>%
+
+  # pasamos los nombres de fila a una columna
+  rownames_to_column(var = "site") %>%
+
+  # transformamos la matrix para poder hacer el plot
+  pivot_longer(cols = -site, names_to = "species", values_to = "abundance") %>%
+
+  # añadimos el plot
+  ggplot(aes(
+    x = abundance,
+    y = reorder(species, abundance, FUN = max),
+    color = site
+  )) +
+  geom_point() + # gráfico de puntos
+  labs(x = "Abundancia", y = "Organismo", color = "Sitio") +
+  theme(text = element_text(size = 18))
+```
+
+
+### Aproximaciones a la distribución de especies
+
+Queremos entender cómo se distribuyen los organismos en términos de abundancia. A continuación, vamos a ir construyendo nuestro entendimiento de cómo esto sucede, desde las preguntas y análisis más sencillos.
+
+
+#### ¿Efecto general del sitio?
+
+Lo primero de todo: hemos muestreado diez localidades en cinco espacios naturales diferentes. ¿Está la abundancia de los diferentes organismos determinada por el lugar de muestreo?
+
+El paquete `mvabund` nos permite ajustar modelos para explicar la abundancia de los organismos. Para esto, es necesaria una pequeña transformación de la estructura de la matriz de datos *L*, que se realiza con la función homónima `mvabund()`, integrada en el paquete. Tras esto, somos capaces de utilizar otra función de `mvabund`, `manyglm()`, para explicar la abundancia de la matriz en función del lugar de muestreo, explícito como `rownames(L)` o, lo que es lo mismo, los nombres de las filas de la matriz *L*. Podemos especificar la distribución de los datos para el modelo utilizando el argumento `family`; en este caso, lo que mejor se ajusta es una distribución poisson, pero podéis probar a cambiar esta distribución (por ejemplo, a `family = "negative_binomial"`) y ver qué ocurre con la distribución de los residuos.
+
+```{r poisson model}
+# creamos un objeto 'mvabund' a partir de la abundancia
+spp <- mvabund(L)
+
+# hacemos un modelo para explicar la abundancia en función del sitio
+mod <- manyglm(spp ~ rownames(L), family = "poisson") # distr. poisson
+
+# representamos los residuos del modelo
+plot(mod)
+```
+
+Luego, simplemente lo podemos resolver con un análisis de la varianza:
+
+```{r anova1}
+# análisis de la varianza para ver si el sitio explica la abundancia
+(anov <- anova(mod, nBoot = 999))
+```
+
+Como podemos ver, el estadístico nos indica que *p* = `r anov$table[2,4]` \> 0.05 y, por tanto, podemos decir que el sitio no tiene un efecto *significativo* a la hora de explicar las abundancias de los organismos.
+
+
+#### Explicación a través del ambiente
+
+En segundo lugar, podemos realizar la aproximación más clásica en modelos de distribución de especies: intentar entender qué variables climáticas explican la abundancia de los diferentes organismos. Ciertos modelos más o menos complejos incluso permiten hacer predicciones sobre la distribución potencial de los organismos a través de modelización ambiental.
+
+En nuestro caso, podemos utilizar una función integrada en el paquete `mvabund` llamada `traitglm()`. Esta función aplica modelos lineales generalizados ([GLMs](https://bookdown.org/steve_midway/DAR/glms-generalized-linear-models.html)) para explicar una matriz de datos en función de otra (u otras) matrices de datos de estructura compatible. Por ejemplo, no podremos explicar una matriz de 10x20 en función de una matriz de 5x15, pero sí una de 10x20 en función de una de 10x15.
+
+```{r multivariate SDM}
+# explicamos la matriz de abundancia en función del ambiente
+sdm_env <- traitglm(L, R) # modelo lineal generalizado (glm)
+
+# transformar y dataviz
+sdm_env$fourth.corner %>%
+  as_tibble(rownames = "species") %>%
+  pivot_longer(cols = -species, names_to = "env_var", values_to = "value") %>%
+  mutate(
+    species = as.factor(str_extract(species, "sp\\d+")),
+    value = round(value, 5),
+    env_var = forcats::fct_inorder(env_var),
+    species = forcats::fct_reorder(
+      species,
+      as.numeric(str_extract(species, "\\d+"))
+    )
+  ) %>%
+
+  # mapa de calor
+  ggplot(aes(x = env_var, y = fct_rev(species), fill = value)) +
+  geom_raster() +
+  scale_fill_gradient2(
+    low = "blue",
+    mid = "white",
+    high = "red",
+    midpoint = 0
+  ) +
+  labs(x = "Variables ambientales", y = "Especies", fill = "Coeficiente") +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1, vjust = 1))
+```
+
+A pesar de que esta aproximación nos aporta gran información sobre la relación de las especies con su ambiente, no deja de ser una forma de analizar qué ocurre con las especies de forma individual. Esto no nos permite alcanzar el nivel de abstracción que deseamos para resolver a nuestra pregunta; para ello, necesitamos incluir los datos de los rasgos funcionales de las especies.
+
+
+## Rasgos funcionales y la matriz *fourth-corner*
+
+Esto lo podemos hacer con la misma función, `traitglm()`, pero añadiendo la matriz *Q*. En este caso, necesitamos introducir la transpuesta (`t()`) de *Q* porque sino el modelo no puede computar matrices de diferente tamaño y nos da el siguiente error: `number of rows of matrices must match (see arg 2)`.
+
+```{r fourth corner glm}
+# añadimos la matriz de rasgos funcionales
+f.corner <- traitglm(L, R, t(Q)) # glm de nuevo
+
+# observemos la matriz fourth-corner
+f.corner$fourth.corner
+```
+
+Y, de esta forma, somos capaces de calcular las interacciones entre los rasgos funcionales de los organismos y el ambiente en el que ocurren. Vamos a representar estos coeficientes gráficamente, no sin antes hacer una rápida comprobación de los residuos del modelo:
+
+```{r check f.corner, cache=FALSE}
+# comprobamos las asunciones del modelo
+plot(f.corner)
+
+# finalmente, podemos representar el mapa de calor
+f.corner$fourth.corner %>%
+  as_tibble(rownames = "traits") %>%
+  pivot_longer(cols = -traits, names_to = "env_var", values_to = "value") %>%
+  mutate(
+    value = round(value, 5),
+    env_var = forcats::fct_inorder(env_var),
+    traits = forcats::fct_reorder(
+      traits,
+      as.numeric(str_extract(traits, "\\d+"))
+    )
+  ) %>%
+
+  # mapa de calor
+  ggplot(aes(x = env_var, y = fct_rev(traits), fill = value)) +
+  geom_raster() +
+  scale_fill_gradient2(
+    low = "blue",
+    mid = "white",
+    high = "red",
+    midpoint = 0
+  ) +
+  labs(
+    x = "Variables ambientales",
+    y = "Rasgos funcionales",
+    fill = "Coeficiente"
+  ) +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1, vjust = 1))
+```
+
+<br>
+
+> **Discusión**
+>
+> ¿Qué información obtenéis de este gráfico? ¿Os ayuda a tomar alguna decisión sobre qué mejorar en vuestro espacio natural?
+
+<br>
+
+# Referencias
+
+<!--References go here.-->
